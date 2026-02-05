@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos VIPs</title>
+    <header>
+        <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 20px; padding-top: 20px;">
+            <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine people</a></h1>
+    </header>
+
+    <style>
+         body {
+        background-color: #f8f9fa; 
+        font-family: 'Arial', sans-serif; 
+        color: #333333; 
+        margin: 0;
+        padding: 0;
+    }
+
+    header h1 {
+        text-align: center;
+        background-color: #1e1e2f; 
+        color: #f8f9fa; 
+        padding: 20px 0;
+        font-size: 3em;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin: 0;
+    }
+
+    header h1 a {
+        color: #f8f9fa;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    header h1 a:hover {
+        color: #ff6f61; 
+    }
+
+    form {
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    }
+
+    label {
+        display: block;
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #555555;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: #ff6f61; 
+        box-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
+    }
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #1e1e2f;
+        color: #f8f9fa; 
+        border: none;
+        border-radius: 5px;
+        font-size: 1.2em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #ff6f61; 
+    }
+
+    .noaccess {
+        font-size: 2.5em;
+        color: #ff6f61;
+        text-align: center;
+        padding: 20px;
+        border: 2px solid #ff6f61;
+        border-radius: 10px;
+        background-color: #ffffff;
+        margin: 50px auto;
+        max-width: 600px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    }
+    </style>
+  <script>
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkbox = document.getElementById("is_mannequin");
+        const mannequinFields = document.getElementById("mannequin_fields");
+
+        checkbox.addEventListener("change", function() {
+            if (this.checked) {
+                mannequinFields.style.display = "block";
+            } else {
+                mannequinFields.style.display = "none";
+            }
+        });
+
+        
+        if (checkbox.checked) {
+            mannequinFields.style.display = "block";
+        }
+    });
+</script>
+</head>
+<body>
+<header>
+    <h1>Modifier une célébrité</h1>
+</header>
+
+    {% if is_connected %}
+        <form method="POST">
+            
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" value="{{ celebrite[1] }}" required>
+
+            <label for="prenom">Prénom :</label>
+            <input type="text" id="prenom" name="prenom" value="{{ celebrite[2] }}" required>
+
+            <label for="sexe">Sexe :</label>
+            <select id="sexe" name="sexe" required>
+                <option value="M" {% if celebrite[3] == 'M' %}selected{% endif %}>Masculin</option>
+                <option value="F" {% if celebrite[3] == 'F' %}selected{% endif %}>Féminin</option>
+            </select>
+
+            <label for="nationalite">Nationalité :</label>
+            <input type="text" id="nationalite" name="nationalite" value="{{ celebrite[4] }}" required>
+
+            <label for="datenais">Date de naissance :</label>
+            <input type="date" id="datenais" name="datenais" value="{{ celebrite[5] }}" required>
+
+            <label for="datedeces">Date de décès (si applicable) :</label>
+            <input type="date" id="datedeces" name="datedeces" value="{{ celebrite[6] or '' }}">
+
+           
+            <label>
+                <input type="checkbox" id="is_mannequin" name="is_mannequin" {% if is_mannequin %}checked{% endif %}>
+                Est-ce un mannequin ?
+            </label>
+
+          
+            <div id="mannequin_fields">
+                <label for="taille">Taille (en cm) :</label>
+                <input type="number" id="taille" name="taille" min="0" value="{{ taille }}">
+
+                <label for="nomAgence">Nom de l'agence :</label>
+                <input type="text" id="nomAgence" name="nomAgence" value="{{ nom_agence }}">
+            </div>
+
+
+            
+            <label>
+                <input type="checkbox" id="is_musicien" name="is_musicien" {% if is_musicien %}checked{% endif %}>
+                Est-ce un musicien ?
+            </label>
+
+           
+            <div id="mannequin_fields">
+                <label for="specialite">Specialite :</label>
+                <input type="text" id="specialite" name="specialite" value="{{specialite}}">
+
+                <label for="nomMaisonDisque">Nom de la maison de disque :</label>
+                <input type="text" id="nomMaisonDisque" name="nomMaisonDisque" value="{{nomMaisonDisque}}">
+            </div>
+
+
+
+            <button type="submit">Modifier</button>
+        </form>
+    {%else%}
+        <h1 class="noaccess">Accès non autorisé</h1>
+    {% endif %}
+
+</body>
+</html>
+

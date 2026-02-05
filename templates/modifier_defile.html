@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos VIPs</title>
+    <header>
+        <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 20px; padding-top: 20px;">
+            <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine people</a></h1>
+    </header>
+</head>
+<body>
+    {%if is_connected%}
+        <form method="POST" action="{{ url_for('modifier_defile', id_defile=defile[0]) }}">
+            <label for="nom_defile">Nom du Défilé :</label>
+            <input type="text" name="nom_defile" value="{{ defile[1] }}" required><br><br>
+
+            <label for="date_defile">Date du Défilé :</label>
+            <input type="date" name="date_defile" value="{{ defile[2] }}" required><br><br>
+
+            <label for="lieu">Lieu :</label>
+            <input type="text" name="lieu" value="{{ defile[3] }}" required><br><br>
+
+            <label for="id_realisateur">Réalisateur du Défilé :</label>
+            <select name="id_realisateur" required>
+                {% for vip in vips %}
+                <option value="{{ vip[0] }}" {% if vip[0] == id_realisateur %}selected{% endif %}>
+                    {{ vip[1] }} {{ vip[2] }}
+                </option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="id_mannequins">Mannequins :</label><br>
+            <select name="id_mannequins" multiple required>
+                {% for mannequin in mannequins %}
+                <option value="{{ mannequin[0] }}" {% if mannequin[0] in mannequins_actuels %}selected{% endif %}>
+                    {{ mannequin[1] }} {{ mannequin[2] }}
+                </option>
+                {% endfor %}
+            </select>
+            <p>(Maintenez la touche Ctrl/Cmd pour sélectionner plusieurs mannequins)</p><br>
+
+            <button type="submit">Modifier le Défilé</button>
+        </form>
+    {%endif%}
+</body>

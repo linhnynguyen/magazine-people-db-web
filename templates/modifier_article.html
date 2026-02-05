@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+    <title>Nos VIPs</title>
+    <header>
+        <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 20px; padding-top: 20px;">
+            <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine people</a></h1>
+    </header>
+</head>
+<body>
+    {%if is_connected%}
+        <form method="POST">
+            <label for="titre">Titre :</label>
+            <input type="text" name="titre" id="titre" value="{{ article[1] }}" required>
+
+            <label for="resume">Résumé :</label>
+            <textarea name="resume" id="resume" required>{{ article[2] }}</textarea>
+
+            <label for="nomRevue">Nom de la revue :</label>
+            <input type="text" name="nomRevue" id="nomRevue" value="{{ article[3] }}" required>
+            
+            <button type="submit">Enregistrer</button>
+        </form>
+    {%endif%}
+</body>

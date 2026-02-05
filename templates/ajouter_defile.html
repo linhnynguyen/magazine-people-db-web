@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un défilé</title>
+    
+    <style>
+        body {
+            background-color: #f8f9fa; 
+            font-family: 'Arial', sans-serif; 
+            color: #333333; 
+            margin: 0;
+            padding: 0;
+        }
+    
+        header h1 {
+            text-align: center;
+            background-color: #1e1e2f; 
+            color: #f8f9fa; 
+            padding: 20px 0;
+            font-size: 3em;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+    
+        header h1 a {
+            color: #f8f9fa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+    
+        header h1 a:hover {
+            color: #ff6f61;
+        }
+    
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #1e1e2f;
+            font-size: 2.5em;
+        }
+    
+        form {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff; 
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+    
+        label {
+            display: block;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555555;
+        }
+    
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box; 
+        }
+    
+        select[multiple] {
+            height: 150px; 
+            padding: 8px; 
+        }
+    
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ff6f61; 
+            box-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
+        }
+    
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #1e1e2f;
+            color: #f8f9fa;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        button:hover {
+            background-color: #ff6f61;
+        }
+    
+        p {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: -10px; 
+            margin-bottom: 20px; 
+        }
+    </style>
+    
+
+<header>
+    <h1 style="text-align: center; background-color: black; color: aliceblue; padding: 20px;">
+        <a href="{{ url_for('home') }}" style="color: aliceblue; text-decoration: none; font-size: 100px;">
+            Magazine People
+        </a>
+    </h1>
+</header>
+
+</head>
+<body>
+    {%if is_connected%}
+        <h1 style="text-align: center;">Ajouter un Défilé</h1>
+        <form method="POST" action="{{ url_for('ajouter_defile') }}">
+            <label for="nom_defile">Nom du Défilé :</label>
+            <input type="text" name="nom_defile" required><br><br>
+
+            <label for="date_defile">Date du Défilé :</label>
+            <input type="date" name="date_defile" required><br><br>
+
+            <label for="lieu">Lieu :</label>
+            <input type="text" name="lieu" required><br><br>
+
+            <label for="id_realisateur">Réalisateur du Défilé :</label>
+            <select name="id_realisateur" required>
+                {% for vip in vips %}
+                <option value="{{ vip[0] }}">{{ vip[1] }} {{ vip[2] }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="id_mannequins">Mannequins :</label><br>
+            <select name="id_mannequins" multiple required>
+                {% for vip in mannequins %}
+                <option value="{{ vip[0] }}">{{ vip[4] }} {{ vip[5] }}</option>
+                {% endfor %}
+            </select>
+            <p>(Maintenez la touche Ctrl/Cmd pour sélectionner plusieurs mannequins)</p><br>
+
+            <button type="submit">Ajouter le Défilé</button>
+        </form>
+    {%endif%}
+</body>
+</html>

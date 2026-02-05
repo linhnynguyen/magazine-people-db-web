@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONNEXION</title>
+    <header>
+        <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 20px; padding-top: 20px;">
+            <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine people</a></h1>
+    </header>
+
+    <style>
+        body {
+            background-color: #f8f9fa; 
+            font-family: 'Arial', sans-serif; 
+            color: #333333; 
+            margin: 0;
+            padding: 0;
+        }
+    
+        header h1 {
+            text-align: center;
+            background-color: #1e1e2f; 
+            color: #f8f9fa; 
+            padding: 20px 0;
+            font-size: 3em;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+    
+        header h1 a {
+            color: #f8f9fa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+    
+        header h1 a:hover {
+            color: #ff6f61; 
+        }
+    
+        form {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff; 
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            text-align: center;
+        }
+    
+        label {
+            display: block;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555555; 
+        }
+    
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+    
+        input:focus {
+            outline: none;
+            border-color: #ff6f61; 
+            box-shadow: 0 0 5px rgba(255, 111, 97, 0.5); 
+        }
+    
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1e1e2f; 
+            color: #f8f9fa; 
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        button:hover {
+            background-color: #ff6f61; 
+        }
+    </style>
+
+</head>
+<body>
+    <form action="{{ url_for('connexion') }}" method="POST">
+        
+        <label for="id">Login :</label>
+        <input type="text" id="id" name="id" required><br><br>
+
+        <label for="password">Password :</label>
+        <input type="text" id="password" name="password" required><br><br>
+
+        <button type="submit">Connexion</button>
+    </form>
+
+
+</body>
+

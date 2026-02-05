@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gérer les Liaisons</title>
+    <header>
+        <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 0px; padding-top: 20px;margin-bottom: 0px;">
+            <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine people</a></h1>
+    </header>
+</head>
+<body>
+    {%if is_connected%}
+        <table>
+            <thead>
+                <tr>
+                    <th>Titre de l'article</th>
+                    <th>Résumé</th>
+                    <th>Nom de la revue</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in articles %}
+                <tr>
+                    <td>{{ article[1] }}</td>
+                    <td>{{ article[2] }}</td>
+                    <td>{{ article[3] }}</td>
+                    <td>
+                        <a href="{{ url_for('modifier_article', id_article=article[0]) }}">
+                            <button type="button">Modifier</button>
+                        </a>
+                        <form method="POST" action="{{ url_for('supprimer_article', id_article=article[0]) }}" style="display:inline;">
+                            <button type="submit" onclick="return confirm('Voulez-vous vraiment supprimer cet article ?');">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {%endif%}
+</body>

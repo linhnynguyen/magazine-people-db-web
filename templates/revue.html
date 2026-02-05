@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVUES POPULAIRES</title>
+    <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 0px; padding-top: 20px;margin-bottom: 0px;">
+        <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine People</a>
+    </h1>
+    <style>
+       body {
+            background-color: #f8f9fa; 
+            font-family: 'Arial', sans-serif; 
+            color: #333333; 
+            margin: 0;
+            padding: 0;
+        }
+
+        header h1 {
+            text-align: center;
+            background-color: #1e1e2f; 
+            color: #f8f9fa; 
+            padding: 20px 0;
+            font-size: 3em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        header h1 a {
+            color: #f8f9fa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        header h1 a:hover {
+            color: #ff6f61; 
+        }
+
+        .titre {
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            color: #1e1e2f;
+            padding: 15px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            transition: transform 0.3s, box-shadow 0.3s ease;
+        }
+
+        .titre:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+            color: #ff6f61;
+        }
+
+        .auteur {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #555555;
+            margin: 10px auto;
+            max-width: 800px;
+        }
+
+        /* Conteneur des boutons */
+        .button-container {
+            text-align: center;
+            margin: 20px auto;
+        }
+
+        .button-container a {
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .button-container button {
+            background-color: #1e1e2f;
+            color: #f8f9fa;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #ff6f61;
+            transform: scale(1.05);
+        }
+
+        p {
+            font-size: 1em;
+            color: #666666;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .noaccess {
+            font-size: 3rem;
+            color: #ff0000;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+
+
+    {% if lst_revues %}
+        {% for revue in lst_revues %}
+            <a href="{{ url_for('render_article', id_revue=revue[0]) }}" style="text-decoration:none">
+                <div class="titre">{{ revue[0] }}</div>
+                <div class="auteur">{{ revue[1] }}</div>
+            </a>
+        {% endfor %}
+    {% else %}
+        <p>Aucune revue disponible.</p>
+    {% endif %}
+
+ 
+    {% if is_connected %}
+    <div class="button-container">
+        <a href="{{ url_for('gerer_revues') }}">
+            <button>Gérer les revues</button>
+        </a>
+        <a href="{{ url_for('ajouter_revue') }}">
+            <button>Ajouter une revue</button>
+        </a>
+    </div>
+    {% endif %}
+</body>
+</html>

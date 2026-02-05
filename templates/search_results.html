@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats de la recherche</title>
+    <header>
+        <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 0px; padding-top: 20px;margin-bottom: 0px;">
+            <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine people</a>
+        </h1>
+        <h1 style="text-align:center; background-color: black; color: aliceblue; padding: 20px;">Résultats de la recherche</h1>
+    </header>
+    <style>
+        body {
+            background-color: #f8f9fa; 
+            font-family: 'Arial', sans-serif; 
+            color: #333333; 
+            margin: 0;
+            padding: 0;
+        }
+
+        header h1 {
+            text-align: center;
+            background-color: #1e1e2f; 
+            color: #f8f9fa; 
+            padding: 20px 0;
+            font-size: 3em;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        header h1 a {
+            color: #f8f9fa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        header h1 a:hover {
+            color: #ff6f61; 
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #1e1e2f;
+            margin: 20px 0;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #ff6f61;
+            margin: 20px 0 10px;
+            text-align: center;
+        }
+
+        .results-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .result-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-card a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #1e1e2f;
+        }
+
+        .result-card a:hover {
+            color: #ff6f61;
+        }
+
+  
+        .photo-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .photo-card {
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            max-width: 150px;
+            border-radius: 8px;
+            margin: auto;
+            display: block; 
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #555555;
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Résultats de Recherche pour "{{ query }}"</h1>
+
+    {% if results["VIP"] %}
+    <h2>Célébrités</h2>
+    <div class="results-container">
+        {% for vip in results["VIP"] %}
+        <div class="result-card">
+            <a href="{{ url_for('render_vip_summary', id_vip=vip[0]) }}">{{ vip[1] }} {{ vip[2] }}</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if results["REVUE"] %}
+    <h2>Revues</h2>
+    <div class="results-container">
+        {% for revue in results["REVUE"] %}
+        <div class="result-card">
+            <a href="{{ url_for('render_article', id_revue=revue[0]) }}">{{ revue[0] }}</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if results["FILM"] %}
+    <h2>Films</h2>
+    <div class="results-container">
+        {% for film in results["FILM"] %}
+        <div class="result-card">
+            <a href="{{ url_for('render_film_details', id_film=film[0]) }}">{{ film[2] }}</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if results["ALBUM"] %}
+    <h2>Albums</h2>
+    <div class="results-container">
+        {% for album in results["ALBUM"] %}
+        <div class="result-card">
+            <a href="{{ url_for('render_album', id_album=album[0]) }}">{{ album[1] }}</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if results["PHOTOS"] %}
+    <h2>Photos</h2>
+    <div class="photo-container">
+        {% for photo in results["PHOTOS"] %}
+        <div class="photo-card">
+            <img src="{{ url_for('static', filename=photo[1]) }}" alt="{{ photo[1] }}">
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if not (results["VIP"] or results["REVUE"] or results["FILM"] or results["ALBUM"] or results["PHOTOS"]) %}
+    <p>Aucun résultat trouvé pour "{{ query }}"</p>
+    {% endif %}
+</body>
+</html>

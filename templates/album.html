@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ALBUMS</title>
+        <header>
+            <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 20px; padding-top: 20px;">
+                <a href="{{ url_for('home') }}" style="color:aliceblue; text-decoration: none; font-size: 100px;">
+                    Magazine people
+                </a>
+            </h1>
+        </header>
+        <style>
+            body {
+                background-color: #f8f9fa;
+                font-family: 'Arial', sans-serif;
+                color: #333333;
+                margin: 0;
+                padding: 0;
+            }
+
+            header h1 {
+                text-align: center;
+                background-color: #1e1e2f;
+                color: #f8f9fa;
+                padding: 20px 0;
+                font-size: 3em;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin: 0;
+            }
+
+            header h1 a {
+                color: #f8f9fa;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+            header h1 a:hover {
+                color: #ff6f61;
+            }
+
+            .container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .album-card {
+                border: none;
+                border-radius: 12px;
+                width: 220px;
+                text-align: center;
+                padding: 15px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                transition: transform 0.3s, box-shadow 0.3s;
+                background-color: #ffffff;
+            }
+
+            .album-card:hover {
+                transform: scale(1.08);
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .container-photo {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+                border-radius: 10px;
+            }
+
+            .album-text {
+                font-size: 1.1em;
+                font-weight: bold;
+                margin-top: 15px;
+                color: #1e1e2f;
+            }
+
+            .auteur {
+                margin-top: 10px;
+                font-size: 0.95em;
+                color: #555555;
+            }
+
+            .actions {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 10px;
+            }
+
+            .actions button {
+                padding: 8px 15px;
+                background-color: #1e1e2f;
+                color: #f8f9fa;
+                border: none;
+                border-radius: 5px;
+                font-size: 0.9em;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .actions button:hover {
+                background-color: #ff6f61;
+            }
+
+            .bande-bouton {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: #ff6f61;
+                color: #ffffff;
+                text-align: center;
+                padding: 15px 0;
+                font-size: 18px;
+                font-weight: bold;
+                border: none;
+                cursor: pointer;
+                box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+                transition: background-color 0.3s ease;
+            }
+
+            .bande-bouton:hover {
+                background-color: #e55c50;
+            }
+        </style>
+    </head>
+<body>
+    {% if lst_album %}
+        <div class="container">
+            {% for album in lst_album %}
+                <div class="album-card">
+                    <!-- Image de couverture -->
+                    <img src="{{ album['photo'] }}" alt="{{ album['nom'] }}" class="container-photo" 
+                         onerror="this.onerror=null;this.src='/static/music_default.jpg';">
+
+                    
+                    <div class="album-text">
+                        <p>{{ album[0] }}</p> 
+                        <p>{{ album[1] }}</p> 
+                    </div>
+
+                    
+                    <div class="auteur">
+                        <p>{{ album[2] }} {{ album[3] }}</p> 
+                    </div>
+
+                   
+                    {% if is_connected %}
+                        <div class="actions">
+                            
+                            <a href="{{ url_for('modifier_album', id_album=album[0]) }}">
+                                <button>Modifier</button>
+                            </a>
+                            
+                            <form method="POST" action="{{ url_for('supprimer_album', id_album=album[0]) }}" 
+                                  onsubmit="return confirm('Voulez-vous vraiment supprimer cet album ?');">
+                                <button type="submit" style="background-color: #ff6f61;">Supprimer</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="text-align: center; font-size: 1.2em;">Aucun album disponible.</p>
+    {% endif %}
+
+    {% if is_connected %}
+        <a href="{{ url_for('ajouter_album') }}">
+            <button class="bande-bouton">Ajouter un album</button>
+        </a>
+    {% endif %}
+</body>
+</html>

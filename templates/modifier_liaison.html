@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modifier Liaison</title>
+    <header>
+        <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 20px; padding-top: 20px;">
+            <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine people</a></h1>
+    </header>
+</head>
+<body>
+    {%if is_connected%}
+        <h1>Modifier Liaison</h1>
+        <form method="POST">
+            <label>Date Séparation :</label>
+            <input type="date" name="dateSeparation" value="{{ liaison[3] }}"><br>
+            <label>Motif Séparation :</label>
+            <input type="text" name="motifSeparation" value="{{ liaison[4] }}"><br>
+            <button type="submit">Enregistrer</button>
+        </form>
+    {%%endif}
+</body>
+</html>

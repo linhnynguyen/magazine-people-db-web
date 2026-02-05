@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gérer les Mariages</title>
+    <header>
+        <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 0px; padding-top: 20px;margin-bottom: 0px;">
+            <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine people</a></h1>
+    </header>
+</head>
+<body>
+    {%if is_connected%}
+        <h1>Mariages</h1>
+        <form method="POST">
+            <label>VIP 1:</label>
+            <select name="idVip1" required>
+                {% for vip in vips %}
+                <option value="{{ vip[0] }}">{{ vip[1] }} {{ vip[2] }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label>VIP 2:</label>
+            <select name="idVip2" required>
+                {% for vip in vips %}
+                <option value="{{ vip[0] }}">{{ vip[1] }} {{ vip[2] }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label>Date Mariage:</label><input type="date" name="dateMariage" required><br>
+            <label>Lieu:</label><input type="text" name="lieu" required><br>
+            <label>Date Séparation:</label><input type="date" name="dateSeparation"><br>
+            <button type="submit">Ajouter Mariage</button>
+        </form>
+
+        <h2>Liste des Mariages</h2>
+        <ul>
+            {% for mariage in mariages %}
+            <li>{{ mariage }}</li>
+            {% endfor %}
+        </ul>
+    {%endif%}
+</body>
+</html>

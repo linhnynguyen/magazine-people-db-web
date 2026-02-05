@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<head>
+<title>PHOTOS POPULAIRES</title>
+
+<header>
+    <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 20px; padding-top: 20px;">
+        <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine people</a></h1>
+</header>
+<style>
+    body {
+        background-color: #f8f9fa; 
+        font-family: 'Arial', sans-serif; 
+        color: #333333; 
+        margin: 0;
+        padding: 0;
+    }
+
+    header h1 {
+        text-align: center;
+        background-color: #1e1e2f; 
+        color: #f8f9fa; 
+        padding: 20px 0;
+        font-size: 3em;
+        text-transform: uppercase;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+
+    header h1 a {
+        color: #f8f9fa;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    header h1 a:hover {
+        color: #ff6f61; 
+    }
+
+    .image-gallery {
+        display: flex;
+        flex-wrap: wrap; 
+        justify-content: center; 
+        gap: 20px; 
+        padding: 20px; 
+    }
+
+    .image-item {
+        width: 250px; 
+        height: 250px;
+        overflow: hidden;
+        border-radius: 10px; 
+        background-color: #ffffff; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative; 
+    }
+
+    .image-item:hover {
+        transform: scale(1.05); 
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); 
+    }
+
+    .image-item img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+        border-radius: 10px; 
+    }
+
+    .bande-bouton {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #ff6f61; 
+        color: #ffffff; 
+        text-align: center;
+        padding: 15px 0;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); 
+        transition: background-color 0.3s ease;
+    }
+
+    .bande-bouton:hover {
+        background-color: #e55c50; 
+    }
+
+    .image-item .bande-bouton {
+        position: absolute; 
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        font-size: 14px;
+        padding: 10px;
+        box-shadow: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    a:hover .bande-bouton {
+        background-color: #e55c50;
+    }
+</style>
+
+</head>
+<body>
+
+    <div class="image-gallery">
+        {% for photo in photos %}
+            <div class="image-item">
+                <img src="{{ url_for('static', filename=photo[1]) }}" alt="Photo {{ photo[0] }}">
+            
+                {% if is_connected %}
+                    <a href="{{ url_for('supprimer_photo', numPhoto=photo[0]) }}">
+                        <button class="bande-bouton">SUPPRIMER</button>
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    
+    
+    
+
+   
+
+    {% if is_connected %}
+
+    <a href="{{ url_for('upload_photo') }}">
+        <button class="bande-bouton">Ajouter une photo</button>
+    </a>
+    {% endif %}
+</body>

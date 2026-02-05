@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un article</title>
+
+    <header>
+        <h1 style="text-align: center; background-color: black; color: aliceblue; padding: 20px;">
+            <a href="{{ url_for('home') }}" style="color: aliceblue; text-decoration: none; font-size: 100px;">
+                Magazine People
+            </a>
+        </h1>
+    </header>
+
+    <style>
+
+        .noaccess {
+           font-size: 3rem;
+           color: #ff0000;
+           text-align: center;
+           padding: 20px;
+           border: 2px solid #ff0000;
+           border-radius: 10px;
+           background-color: #fff;
+           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+       }
+        body {
+            background-color: #f8f9fa; 
+            font-family: 'Arial', sans-serif; 
+            color: #333333; 
+            margin: 0;
+            padding: 0;
+        }
+    
+        header h1 {
+            text-align: center;
+            background-color: #1e1e2f; 
+            color: #f8f9fa; 
+            padding: 20px 0;
+            font-size: 3em;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+    
+        header h1 a {
+            color: #f8f9fa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+    
+        header h1 a:hover {
+            color: #ff6f61; 
+        }
+    
+        form {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        }
+    
+        label {
+            display: block;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555555;
+        }
+    
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+    
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ff6f61; 
+            box-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
+        }
+    
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #1e1e2f; 
+            color: #f8f9fa; 
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        button:hover {
+            background-color: #ff6f61; 
+    </style>
+
+</head>
+<body>
+    
+    {% if is_connected %}
+        <form method="POST" action="{{ url_for('ajouter_article') }}">
+            <label for="titre">Titre de l'article :</label>
+            <input type="text" id="titre" name="titre" placeholder="Entrez le titre de l'article" required><br><br>
+        
+            <label for="resume">Entrez le contenu de l'article :</label>
+            <input type="text" id="resume" name="resume" required><br><br>
+        
+            <label for="nomRevue">Revues auquel appartient l'article :</label>
+            <select id="nomRevue" name="nomRevue" required>
+                {% for revue in lst_revues %}
+                    <option value="{{ revue[1] }}">{{ revue[1] }}</option>
+                {% endfor %}
+            </select>
+        
+
+            <label for="vips">VIPs:</label>
+            <select name="vips" required>
+                {% for vip in vips %}
+                    <option value="{{ vip[0] }}">{{ vip[1] }} {{ vip[2] }}</option>
+                {% endfor %}
+            </select><br><br>
+            
+            <button type="submit">Ajouter l'article</button>
+        </form>
+    {%else%}
+        <h1 class="noaccess">Accès non autorisé</h1>
+    {% endif %}  
+
+</body>
+</html>

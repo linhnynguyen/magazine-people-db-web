@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résumé du VIP</title>
+    <header>
+        <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 20px; padding-top: 20px;">
+            <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine people</a></h1>
+    </header>
+
+    <style>
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header h1 {
+            text-align: center;
+            background-color: #1e1e2f;
+            color: #f8f9fa;
+            padding: 20px 0;
+            font-size: 3em;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        header h1 a {
+            color: #f8f9fa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        header h1 a:hover {
+            color: #ff6f61;
+        }
+
+      
+        .info-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-container h2 {
+            text-align: center;
+            font-size: 1.8em;
+            color: #1e1e2f;
+            margin-bottom: 15px;
+        }
+
+        .info-container p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #555555;
+            margin: 10px 0;
+        }
+
+        .info-container strong {
+            color: #1e1e2f;
+        }
+
+   
+        .section-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-container h2 {
+            font-size: 1.5em;
+            color: #ff6f61;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .section-container ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .section-container li {
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-container li:hover {
+            background-color: #ffefef;
+        }
+
+    
+        img {
+            display: block;
+            margin: 10px auto;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 200px;
+            width: 100%;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Résumé du VIP</h1>
+    <div class="info-container">
+    <h2>Informations personnelles</h2>
+    <p><strong>Nom :</strong> {{ vip_info.details[0] }}</p>
+    <p><strong>Prénom :</strong> {{ vip_info.details[1] }}</p>
+    <p><strong>Sexe :</strong> {{ vip_info.details[2] }}</p>
+    <p><strong>Nationalité :</strong> {{ vip_info.details[3] }}</p>
+    <p><strong>Date de naissance :</strong> {{ vip_info.details[4] }}</p>
+    <p><strong>Date de décès :</strong> {{ vip_info.details[5] or "N/A" }}</p>
+    </div>
+
+    <div class="section-container">
+    <h2>Albums</h2>
+    {% if vip_info.albums %}
+        <ul>
+        {% for album in vip_info.albums %}
+            <li>{{ album[0] }} ({{ album[1] }})</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun album trouvé.</p>
+    {% endif %}
+    </div>
+
+    <div class="section-container">
+    <h2>Défilés</h2>
+    {% if vip_info.defiles %}
+        <ul>
+        {% for defile in vip_info.defiles %}
+            <li>{{ defile[0] }} à {{ defile[1] }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun défilé trouvé.</p>
+    {% endif %}
+    </div>
+
+    <div class="section-container">
+    <h2>Films</h2>
+    {% if vip_info.films %}
+        <ul>
+        {% for film in vip_info.films %}
+            <li>{{ film[0] }} ({{ film[1] }}), Genre : {{ film[2] }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun film trouvé.</p>
+    {% endif %}
+    </div>
+
+    <div class="section-container">
+    <h2>Article</h2>
+    {% if vip_info.articles %}
+        <ul>
+            {% for article in vip_info.articles %}
+                <li>{{article[0]}}  -- {{article[3]}} {{article[6]}}</li>
+            {% endfor %}
+        </ul>
+    {%else%}
+        <p>Aucun article correspondant</p>
+    {% endif %}
+    </div>
+
+    <div class="section-container">
+    <h2>Marriages</h2>
+    {%if vip_info.mariage%}
+        <ul>
+            {%for mariages in vip_info.mariage%}
+                <li>
+                    {%if mariages[0] ==vip_info.details[0] and mariages[1]== vip_info.details[1] %}
+                        {{mariages[2]}} {{mariages[3]}} - Date mariage: {{mariages[4]}} / Date Séparation: {{mariages[5]}}
+                    {%else%}
+                        {{mariages[0]}} {{mariages[1]}} - Date mariage: {{mariages[4]}} / Date séparation: {{mariages[5]}}
+                    {%endif%}
+                </li>
+            {%endfor%}
+        </ul>
+    {%else%}
+        <p>Aucun mariage</p>
+    {%endif%}
+    </div>
+
+    <div class="section-container">
+    <h2>Liaisons</h2>
+    {%if vip_info.liaisons%}
+        <ul>
+            {%for liaison in vip_info.liaisons%}
+                <li>
+                    {%if liaison[0] == vip_info.details[0] and liaison[1]== vip_info.details[1]%}
+                        {{liaison[2]}} {{liaison[3]}} - {{liaison[4]}} {{liaison[5]}}
+                    {%else%}
+                        {{liaison[0]}} {{liaison[1]}} - {{liaison[4]}} {{liaison[3]}}
+                    {%endif%}
+                </li>
+            {%endfor%}
+        </ul>
+    {%else%}
+        <p>Aucune liaison</p>
+    {%endif%}
+    </div>
+
+    <div class="section-container">
+    <h2>Photos</h2>
+    {% if vip_info.photos %}
+        <ul>
+            {% for photo in vip_info.photos %}
+            <div style="margin-bottom: 20px;">
+                <h2>{{ photo[2] }} - {{ photo[3] }}</h2> 
+                <img 
+                    src="{{ url_for('static', filename=photo[1]) }}" 
+                    alt="Photo {{ photo[2] }}" 
+                    style="width:200px;">
+            </div>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune photo trouvée.</p>
+    {% endif %}
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relations des VIP</title>
+    <style>
+     
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+        }
+
+      
+        header h1 {
+            text-align: center;
+            background-color: #1e1e2f;
+            color: #f8f9fa;
+            padding: 20px 0;
+            font-size: 3em;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        header h1 a {
+            color: #f8f9fa;
+            text-decoration: none;
+        }
+
+   
+        .titre {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1e1e2f;
+            padding: 20px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+
+     
+        .relations-liste {
+            max-width: 500px; 
+            margin: 20px auto;
+            padding: 10px 15px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .relations-liste h3 {
+            font-size: 1.5em;
+            color: #ff6f61;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .relations-liste ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .relations-liste li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .relations-liste li:last-child {
+            border-bottom: none;
+        }
+
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            color: #ffffff;
+        }
+
+        .btn-supprimer {
+            background-color: #dc3545;
+        }
+
+        .btn-supprimer:hover {
+            background-color: #c82333;
+        }
+
+        .btn-modifier {
+            background-color: #1e1e2f;
+        }
+
+        .btn-modifier:hover {
+            background-color: #ff6f61;
+        }
+
+      
+        .boutons-ajout {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .boutons-ajout a {
+            display: inline-block;
+            background-color: #1e1e2f;
+            color: #ffffff;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .boutons-ajout a:hover {
+            background-color: #ff6f61;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>
+            <a href="{{ url_for('home') }}">Magazine people</a>
+        </h1>
+    </header>
+
+
+    {% for relation in relations %}
+
+        <div class="titre">{{ relation.vip }}</div>
+
+
+        <div class="relations-liste">
+            <h3>Liaisons</h3>
+            {% if relation.liaisons %}
+                <ul>
+                    {% for liaison in relation.liaisons %}
+                        <li>
+                            <span>
+                                Avec {{ liaison[0] }} {{ liaison[1] }} 
+                                (Date Liaison : {{ liaison[2] }}{% if liaison[3] %}, Date Séparation : {{ liaison[3] }}{% endif %}
+                                {% if liaison[4] %}, Motif : {{ liaison[4] }}{% endif %})
+                            </span>
+                            {%if is_connected%}
+                                <div class="action-buttons">
+                                    <form method="POST" action="{{ url_for('supprimer_liaison', idVip1=relation.vip_id, idVip2=liaison[5], date=liaison[2]) }}">
+                                        <button type="submit" class="btn-supprimer" onclick="return confirm('Voulez-vous vraiment supprimer cette liaison ?');">Supprimer</button>
+                                    </form>
+                                    <a href="{{ url_for('modifier_liaison', idVip1=relation.vip_id, idVip2=liaison[5], date=liaison[2]) }}">
+                                        <button type="button" class="btn-modifier">Modifier</button>
+                                    </a>
+                                </div>
+                            {%endif%}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p style="text-align: center;">Aucune liaison enregistrée.</p>
+            {% endif %}
+        </div>
+
+
+        <div class="relations-liste">
+            <h3>Mariages</h3>
+            {% if relation.mariages %}
+                <ul>
+                    {% for mariage in relation.mariages %}
+                        <li>
+                            <span>
+                                Avec {{ mariage[0] }} {{ mariage[1] }} 
+                                (Date Mariage : {{ mariage[2] }}, Lieu : {{ mariage[3] }}
+                                {% if mariage[4] %}, Date Séparation : {{ mariage[4] }}{% endif %})
+                            </span>
+                            {% if is_connected%}
+                                <div class="action-buttons">
+                                    <form method="POST" action="{{ url_for('supprimer_mariage', idVip1=relation.vip_id, idVip2=mariage[5], date=mariage[2]) }}">
+                                        <button type="submit" class="btn-supprimer" onclick="return confirm('Voulez-vous vraiment supprimer ce mariage ?');">Supprimer</button>
+                                    </form>
+                                    <a href="{{ url_for('modifier_mariage', idVip1=relation.vip_id, idVip2=mariage[5], date=mariage[2]) }}">
+                                        <button type="button" class="btn-modifier">Modifier</button>
+                                    </a>
+                                </div>
+                            {%endif%}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p style="text-align: center;">Aucun mariage enregistré.</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+
+    {% if is_connected %}
+        <div class="boutons-ajout">
+            <a href="{{ url_for('gerer_mariages') }}">Ajouter un mariage</a>
+            <a href="{{ url_for('gerer_liaisons') }}">Ajouter une liaison</a>
+        </div>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos VIPs</title>
+    <header>
+        <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 20px; padding-top: 20px;">
+            <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine people</a></h1>
+    </header>
+    <style>
+        body {
+            background-color: #f8f9fa; 
+            font-family: 'Arial', sans-serif; 
+            color: #333333; 
+            margin: 0;
+            padding: 0;
+        }
+
+        header h1 {
+            text-align: center;
+            background-color: #1e1e2f; 
+            color: #f8f9fa; 
+            padding: 20px 0;
+            font-size: 3em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        header h1 a {
+            color: #f8f9fa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        header h1 a:hover {
+            color: #ff6f61; 
+        }
+
+        .vip-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .vip-card {
+            border: none;
+            border-radius: 12px;
+            width: 220px;
+            text-align: center;
+            padding: 15px;
+            background-color: #ffffff; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .vip-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); 
+        }
+
+        .vip-photo {
+            width: 100%;
+            height: 200px;
+            object-fit: cover; 
+            border-radius: 10px;
+        }
+
+        .vip-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #1e1e2f;
+        }
+
+        .vip-description {
+            font-size: 1em;
+            color: #555555; 
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        p {
+            margin: 5px 0;
+        }
+
+        
+        .button-container {
+            display: flex;                
+            justify-content: center;      
+            gap: 20px;                    
+            margin-top: 20px;             
+        }
+
+        .button-container button {
+            flex: 0 1 auto;
+            padding: 10px 20px;
+            background-color: #1e1e2f; 
+            color: #f8f9fa; 
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #ff6f61; 
+        }
+
+        .bande-bouton {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ff6f61; 
+            color: #ffffff;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); 
+            transition: background-color 0.3s ease;
+        }
+
+        .bande-bouton:hover {
+            background-color: #e55c50;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        a:hover .vip-card {
+            transform: scale(1.08);
+        }
+    </style>
+</head>
+<body>
+
+    
+    {% if lst_celebrite %}
+        <div class="vip-container">
+            
+            {% for vip in lst_celebrite %}
+            <a href="{{ url_for('render_vip_summary', id_vip=vip[0]) }}" style="text-decoration:none">
+                <div class="vip-card">
+                    <img src="{{ vip['photo'] }}" alt="{{ vip['nom'] }}" class="vip-photo" onerror="this.onerror=null;this.src='/static/default.jpg';">
+                    <div class="vip-name">{{ vip[2] }} {{ vip[1] }}</div>
+                    <div class="vip-description">
+                        <p>Date de naissance : {{ vip[5] }}</p>
+                        <p>Nationalité : {{ vip[4] }}</p>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+       
+        <div class="button-container">
+            <form method="GET" action="{{ url_for('render_celebrite') }}">
+                <button type="submit" name="sort" value="asc">Trier A-Z</button>
+                <button type="submit" name="sort" value="desc">Trier Z-A</button>
+            </form>
+        </div>
+        
+    {% else %}
+        <p style="text-align: center; font-size: 1.2em;">Aucun VIP disponible.</p>
+    {% endif %}
+
+    {% if is_connected %}
+        <div class="button-container">
+            <a href="{{ url_for('admin_celebrite')}}">
+                <button>Modifier/Supprimer</button>
+            </a>
+
+            <a href="{{ url_for('ajouter_celebrite') }}">
+                <button>Ajouter une célébrité</button>
+            </a>
+        </div>
+    {% endif %}
+</body>
+</html>

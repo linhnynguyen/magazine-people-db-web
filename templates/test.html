@@ -1,0 +1,165 @@
+<!doctype html>
+<title>Accueil Magazine People</title>
+<header>
+    <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 0px; padding-top: 20px;margin-bottom: 0px;">
+        <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine People</a>
+    </h1>
+</header>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa; 
+    }
+
+    header h1 {
+        text-align: center;
+        background-color: #1e1e2f; 
+        color: #f8f9fa; 
+        padding: 20px 0;
+        margin: 0;
+        font-size: 3em;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    header h1 a {
+        color: #f8f9fa;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    header h1 a:hover {
+        color: #ff6f61; 
+    }
+
+    nav {
+        background-color: #1e1e2f; 
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    }
+
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    nav li {
+        display: inline-block;
+        position: relative;
+        font-size: 20px;
+    }
+
+    nav a {
+        text-decoration: none;
+        padding: 14px 20px;
+        display: inline-block;
+        font-size: 1em;
+        font-weight: bold;
+        color: #f8f9fa; 
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    nav a:hover {
+        background-color: #ff6f61; 
+        color: #ffffff;
+        border-radius: 5px; 
+    }
+
+    nav a:visited {
+        color: #f8f9fa;
+    }
+
+    table {
+        margin: 20px auto;
+        border-collapse: collapse;
+        width: 80%;
+        text-align: left;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #1e1e2f;
+        color: white;
+    }
+
+    a {
+        color: #1e1e2f;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #ff6f61;
+        text-decoration: underline;
+    }
+</style>
+
+<nav>
+    <ul>
+        <li><a href="celebrite">Célébrité</a></li>
+        <li><a href="revue">Revue</a></li>
+        <li><a href="photos">Photos</a></li>
+        <li><a href="album">Album</a></li>
+        <li><a href="defile">Défilé</a></li>
+        <li><a href="film">Film</a></li>
+        <li><a href="relations">Relation</a></li>
+        {% if not is_connected %}
+            <li><a href="connexion">Connexion</a></li>
+        {% else %}
+            <li><a href="deconnexion">Déconnexion</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+<body>
+    <form action="{{ url_for('search') }}" method="get" style="text-align: center; margin: 20px;">
+        <input type="text" name="query" placeholder="Rechercher..." 
+            style="padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc;">
+        <button type="submit" 
+            style="padding: 10px 15px; border: none; background-color: #1e1e2f; color: white; border-radius: 5px; cursor: pointer;">
+            Rechercher
+        </button>
+    </form>
+
+    <h2 style="text-align: center;">Top 5 Hommes avec le plus de divorces</h2>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Nombre de divorces</th>
+        </tr>
+        {% for homme in hommes_divorces %}
+        <tr>
+            <td><a href="{{ url_for('render_vip_summary', id_vip=homme[0]) }}">{{ homme[1] }}</a></td>
+            <td><a href="{{ url_for('render_vip_summary', id_vip=homme[0]) }}">{{ homme[2] }}</a></td>
+            <td>{{ homme[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2 style="text-align: center;">VIPs non apparus dans un article l'année dernière</h2>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+        </tr>
+        {% for vip in vips_non_apparus %}
+        <tr>
+            <td><a href="{{ url_for('render_vip_summary', id_vip=vip[0]) }}">{{ vip[1] }}</a></td>
+            <td><a href="{{ url_for('render_vip_summary', id_vip=vip[0]) }}">{{ vip[2] }}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>

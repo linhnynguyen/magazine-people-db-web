@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choisir un Défilé à Modifier</title>
+    <h1 style="text-align:center; background-color: black; color: aliceblue; padding-bottom: 0px; padding-top: 20px;margin-bottom: 0px;">
+        <a href="{{url_for('home')}}" style="color:aliceblue; text-decoration: none; font-size: 100px;">Magazine People</a>
+    </h1>
+    <style>
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* En-tête principal */
+        header h1 {
+            text-align: center;
+            background-color: #1e1e2f; 
+            color: #f8f9fa; 
+            padding: 20px 0;
+            margin: 0;
+            font-size: 3em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        header h1 a {
+            color: #f8f9fa; 
+            text-decoration: none; 
+        }
+
+       
+        h1 {
+            text-align: center;
+            color: #1e1e2f;
+            margin: 20px 0;
+            font-size: 2.5em;
+        }
+
+        
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: #1e1e2f;
+            color: #f8f9fa;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            font-size: 1.1em;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: inherit; 
+            transition: background-color 0.3s ease;
+        }
+
+        
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            color: #fff;
+            background-color: #1e1e2f;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff6f61;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    {%if is_connected%}
+        
+        <h1>Choisir un Défilé à Modifier</h1>
+
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom du Défilé</th>
+                    <th>Date</th>
+                    <th>Lieu</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for defile in defiles %}
+                <tr>
+                    <td>{{ defile[0] }}</td>
+                    <td>{{ defile[1] }}</td>
+                    <td>{{ defile[2] }}</td>
+                    <td>{{ defile[3] }}</td>
+                    <td>
+                        <a href="{{ url_for('modifier_defile', id_defile=defile[0]) }}">
+                            <button>Modifier</button>
+                        </a>
+                        <form action="{{ url_for('supprimer_defile', id_defile=defile[0]) }}" method="POST">
+                            <button type="submit">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {%endif%}
+</body>
+</html>
